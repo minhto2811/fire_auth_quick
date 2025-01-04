@@ -2,6 +2,9 @@
 
 # FireAuthQuick Plugin
 
+![img](https://github.com/user-attachments/assets/c1acd6e0-7118-4a36-a005-6cc0d21ec7e9)
+
+
 **FireAuthQuick Plugin** is a Flutter plugin that simplifies user authentication using Google, Facebook, Apple, and Anonymous methods, enabling a seamless login experience with minimal setup.
 
 ## 🚀 Features
