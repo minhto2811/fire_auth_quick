@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-enum OAuth { google, apple, facebook }
+enum OAuth { google, apple, facebook, anonymous }
 
 class FireAuthQuick {
   static final _auth = FirebaseAuth.instance;
@@ -10,11 +10,19 @@ class FireAuthQuick {
 
   static User? get currentUser => _auth.currentUser;
 
-  static Future<void> logOut() async => await Future.wait([
+  static Future<void> signOut() async => await Future.wait([
         _auth.signOut(),
         _googleSignIn.signOut(),
-        FacebookAuth.instance.logOut()
+        _facebookLogOut(),
       ]);
+
+  static Future<void> _facebookLogOut() async {
+    try {
+      await FacebookAuth.instance.logOut();
+    } catch (e) {
+      // ignore
+    }
+  }
 
   static Future<void> delete() async {
     final user = await reauthenticateWithProvider();
@@ -32,6 +40,8 @@ class FireAuthQuick {
         return await _loginWithApple();
       case OAuth.facebook:
         return await _loginWithFacebook();
+      case OAuth.anonymous:
+        return await _auth.signInAnonymously();
       default:
         throw Exception('Unknown provider: $oAuth');
     }

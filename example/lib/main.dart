@@ -25,8 +25,8 @@ class _MyAppState extends State<MyApp> {
     await FireAuthQuick.linkWithProvider(oAuth: oAuth);
   }
 
-  logOut() async {
-    await FireAuthQuick.logOut();
+  signOut() async {
+    await FireAuthQuick.signOut();
   }
 
   @override
@@ -40,6 +40,11 @@ class _MyAppState extends State<MyApp> {
           width: double.infinity,
           child: Column(
             children: [
+              ElevatedButton(
+                  onPressed: () {
+                    login(OAuth.anonymous);
+                  },
+                  child: const Text('Login with Anonymous')),
               ElevatedButton(
                   onPressed: () {
                     login(OAuth.google);
@@ -70,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                     link(OAuth.apple);
                   },
                   child: const Text('Link with Apple')),
-              ElevatedButton(onPressed: logOut, child: const Text('Logout')),
+              ElevatedButton(onPressed: signOut, child: const Text('Logout')),
             ],
           ),
         ),
