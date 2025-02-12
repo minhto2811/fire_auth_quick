@@ -42,10 +42,11 @@ class FireAuthQuick {
         return await _loginWithFacebook();
       case OAuth.anonymous:
         return await _auth.signInAnonymously();
-      default:
-        throw Exception('Unknown provider: $oAuth');
-    }
+      }
   }
+
+  static Future<User> unlink(String providerId) async =>
+      await currentUser!.unlink(providerId);
 
   static Future<UserCredential> linkWithProvider({required OAuth oAuth}) async {
     if (_auth.currentUser == null) throw Exception('No user logged in');
