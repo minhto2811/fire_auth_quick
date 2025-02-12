@@ -17,3 +17,7 @@
 ## 0.0.5
 
 * Update dependencies: `firebase_auth: ^5.4.2`
+
+## 0.0.6
+
+* Update: Export the methods and the original properties,...

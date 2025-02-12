@@ -1,6 +1,6 @@
 name: fire_auth_quick
 description: "A Flutter plugin for social login and account linking with Google, Facebook, and Apple."
-version: 0.0.5
+version: 0.0.6
 homepage: https://github.com/minhto2811/fire_auth_quick.git
 
 environment:
