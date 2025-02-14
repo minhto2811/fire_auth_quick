@@ -25,8 +25,7 @@ class FireAuthQuick {
   }
 
   static Future<void> delete() async {
-    final user = await reauthenticateWithProvider();
-    await user.delete();
+    await currentUser!.delete();
     await _googleSignIn.signOut();
   }
 
