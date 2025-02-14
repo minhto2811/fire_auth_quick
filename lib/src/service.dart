@@ -83,6 +83,7 @@ class FireAuthQuick {
       {AuthProvider? authProvider}) async {
     final user = _auth.currentUser;
     if (user == null) throw Exception('No user logged in');
+    if(user.isAnonymous) return user;
     final provider =
         authProvider ?? _getProvider(user.providerData.first.providerId);
     await user.reauthenticateWithProvider(provider);
