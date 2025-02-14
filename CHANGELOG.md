@@ -1,3 +1,7 @@
+## 0.0.8
+
+* Fix `await FireAuthQuick.delete();` duplicate 
+* 
 ## 0.0.7
 
 * Fix `await FireAuthQuick.delete();`
