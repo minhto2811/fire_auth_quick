@@ -1,3 +1,7 @@
+## 0.0.10
+
+* Update dependencies `firebase_auth: ^5.5.2`
+
 ## 0.0.9
 
 * Update dependencies
