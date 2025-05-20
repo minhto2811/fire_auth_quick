@@ -1,28 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-enum OAuth { google, apple, facebook, anonymous }
+enum OAuth { google, apple, anonymous }
 
 class FireAuthQuick {
   static final _auth = FirebaseAuth.instance;
-  static final _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
+  static GoogleSignIn _googleSignIn =
+      GoogleSignIn(scopes: ['email', 'profile']);
 
   static User? get currentUser => _auth.currentUser;
 
   static Future<void> signOut() async => await Future.wait([
         _auth.signOut(),
         _googleSignIn.signOut(),
-        _facebookLogOut(),
       ]);
 
-  static Future<void> _facebookLogOut() async {
-    try {
-      await FacebookAuth.instance.logOut();
-    } catch (e) {
-      // ignore
-    }
-  }
+  /// Default: GoogleSignIn(scopes: ['email', 'profile'])
+  static void setScopes(List<String> scopes) =>
+      _googleSignIn = GoogleSignIn(scopes: ['email', 'profile', ...scopes]);
 
   static Future<void> delete() async {
     await currentUser!.delete();
@@ -37,11 +32,9 @@ class FireAuthQuick {
         return await _loginWithGoogle();
       case OAuth.apple:
         return await _loginWithApple();
-      case OAuth.facebook:
-        return await _loginWithFacebook();
       case OAuth.anonymous:
         return await _auth.signInAnonymously();
-      }
+    }
   }
 
   static Future<User> unlink(String providerId) async =>
@@ -54,8 +47,6 @@ class FireAuthQuick {
         return await _linkWithGoogle();
       case OAuth.apple:
         return await _linkWithApple();
-      case OAuth.facebook:
-        return await _linkWithFacebook();
       default:
         throw Exception('Unknown provider: $oAuth');
     }
@@ -73,16 +64,11 @@ class FireAuthQuick {
     return await _auth.currentUser!.linkWithProvider(appleProvider);
   }
 
-  static Future<UserCredential> _linkWithFacebook() async {
-    final facebookProvider = FacebookAuthProvider();
-    return await _auth.currentUser!.linkWithProvider(facebookProvider);
-  }
-
   static Future<User> reauthenticateWithProvider(
       {AuthProvider? authProvider}) async {
     final user = _auth.currentUser;
     if (user == null) throw Exception('No user logged in');
-    if(user.isAnonymous) return user;
+    if (user.isAnonymous) return user;
     final provider =
         authProvider ?? _getProvider(user.providerData.first.providerId);
     await user.reauthenticateWithProvider(provider);
@@ -97,13 +83,6 @@ class FireAuthQuick {
       idToken: googleAuth?.idToken,
     );
     return credential;
-  }
-
-  static Future<UserCredential> _loginWithFacebook() async {
-    final LoginResult loginResult = await FacebookAuth.instance.login();
-    final OAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
-    return _auth.signInWithCredential(facebookAuthCredential);
   }
 
   static Future<UserCredential> _loginWithApple() async {
@@ -124,8 +103,6 @@ class FireAuthQuick {
         return GoogleAuthProvider();
       case 'apple.com':
         return AppleAuthProvider();
-      case 'facebook.com':
-        return FacebookAuthProvider();
       default:
         throw Exception('Unknown provider: $provider');
     }

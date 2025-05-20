@@ -52,11 +52,6 @@ class _MyAppState extends State<MyApp> {
                   child: const Text('Login with Google')),
               ElevatedButton(
                   onPressed: () {
-                    login(OAuth.facebook);
-                  },
-                  child: const Text('Login with Facebook')),
-              ElevatedButton(
-                  onPressed: () {
                     login(OAuth.apple);
                   },
                   child: const Text('Login with Apple')),
@@ -65,11 +60,6 @@ class _MyAppState extends State<MyApp> {
                     link(OAuth.google);
                   },
                   child: const Text('Link with Google')),
-              ElevatedButton(
-                  onPressed: () {
-                    link(OAuth.facebook);
-                  },
-                  child: const Text('Link with Facebook')),
               ElevatedButton(
                   onPressed: () {
                     link(OAuth.apple);

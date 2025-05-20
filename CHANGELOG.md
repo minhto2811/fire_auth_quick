@@ -1,3 +1,15 @@
+## 2.0.1
+
+* Add Function `setScopes(List<String> scopes)`
+
+## 2.0.0
+
+* Update dependencies `Remove Facebook login`
+
+## 1.0.0
+
+* Update dependencies `firebase_auth: ^5.5.3, flutter_facebook_auth: ^7.1.2`
+
 ## 0.0.10
 
 * Update dependencies `firebase_auth: ^5.5.2`

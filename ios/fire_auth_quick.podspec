@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'fire_auth_quick'
-  s.version          = '0.0.10'
+  s.version          = '2.0.1'
   s.summary          = 'A new Flutter plugin project.'
   s.description      = <<-DESC
 A new Flutter plugin project.
