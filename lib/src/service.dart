@@ -9,6 +9,7 @@ class FireAuthQuick {
       GoogleSignIn(scopes: ['email', 'profile']);
 
   static User? get currentUser => _auth.currentUser;
+  static GoogleSignInAccount? get googleUser => _googleSignIn.currentUser;
 
   static Future<void> signOut() async => await Future.wait([
         _auth.signOut(),
