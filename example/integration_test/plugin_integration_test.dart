@@ -7,10 +7,6 @@
 // https://flutter.dev/to/integration-testing
 
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
-
-import 'package:fire_auth_quick/fire_auth_quick.dart';
 
 void main() {
 }

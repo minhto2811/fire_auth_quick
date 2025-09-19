@@ -1,3 +1,7 @@
+## 2.0.2
+
+* Update dependencies `google_sign_in: ^7.2.0`, `firebase_auth: ^6.0.2`
+
 ## 2.0.1
 
 * Add Function `setScopes(List<String> scopes)`

@@ -5,11 +5,10 @@ enum OAuth { google, apple, anonymous }
 
 class FireAuthQuick {
   static final _auth = FirebaseAuth.instance;
-  static GoogleSignIn _googleSignIn =
-      GoogleSignIn(scopes: ['email', 'profile']);
-
+  static final _googleSignIn = GoogleSignIn.instance;
   static User? get currentUser => _auth.currentUser;
-  static GoogleSignInAccount? get googleUser => _googleSignIn.currentUser;
+
+
 
   static Future<void> signOut() async => await Future.wait([
         _auth.signOut(),
@@ -17,12 +16,10 @@ class FireAuthQuick {
       ]);
 
   /// Default: GoogleSignIn(scopes: ['email', 'profile'])
-  static void setScopes(List<String> scopes) =>
-      _googleSignIn = GoogleSignIn(scopes: ['email', 'profile', ...scopes]);
 
   static Future<void> delete() async {
     await currentUser!.delete();
-    await _googleSignIn.signOut();
+    await _googleSignIn.disconnect();
   }
 
   static Future<UserCredential> loginWithProvider(
@@ -77,11 +74,10 @@ class FireAuthQuick {
   }
 
   static Future<OAuthCredential> get _getOAuthCredentialGoogle async {
-    final googleUser = await _googleSignIn.signIn();
-    final googleAuth = await googleUser?.authentication;
+    final googleUser = await _googleSignIn.authenticate(scopeHint: ['email', 'profile']);
+    final googleAuth = googleUser.authentication;
     final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+      idToken: googleAuth.idToken,
     );
     return credential;
   }
