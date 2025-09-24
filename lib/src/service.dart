@@ -6,9 +6,21 @@ enum OAuth { google, apple, anonymous }
 class FireAuthQuick {
   static final _auth = FirebaseAuth.instance;
   static final _googleSignIn = GoogleSignIn.instance;
+
   static User? get currentUser => _auth.currentUser;
 
-
+  static Future<void> googleInitialize({
+    String? clientId,
+    String? serverClientId,
+    String? nonce,
+    String? hostedDomain,
+  }) =>
+      _googleSignIn.initialize(
+        clientId: clientId,
+        serverClientId: serverClientId,
+        nonce: nonce,
+        hostedDomain: hostedDomain,
+      );
 
   static Future<void> signOut() async => await Future.wait([
         _auth.signOut(),
@@ -74,7 +86,8 @@ class FireAuthQuick {
   }
 
   static Future<OAuthCredential> get _getOAuthCredentialGoogle async {
-    final googleUser = await _googleSignIn.authenticate(scopeHint: ['email', 'profile']);
+    final googleUser =
+        await _googleSignIn.authenticate(scopeHint: ['email', 'profile']);
     final googleAuth = googleUser.authentication;
     final credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,

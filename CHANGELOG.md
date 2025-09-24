@@ -1,3 +1,11 @@
+## 2.0.4
+
+* Fix `serverClientId must be provided on Android` ~ `googleInitialize` 
+
+## 2.0.3
+
+* Fix 
+
 ## 2.0.2
 
 * Update dependencies `google_sign_in: ^7.2.0`, `firebase_auth: ^6.0.2`
