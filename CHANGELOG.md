@@ -1,3 +1,8 @@
+## 2.0.5
+
+* Update `firebase_auth: ^6.2.0`
+
+
 ## 2.0.4
 
 * Fix `serverClientId must be provided on Android` ~ `googleInitialize` 
