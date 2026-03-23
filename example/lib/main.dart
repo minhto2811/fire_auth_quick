@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:fire_auth_quick/fire_auth_quick.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import './firebase_options.dart';
+
+bool isDesktop = Platform.isWindows || Platform.isMacOS || Platform.isLinux;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +21,23 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    autoLogin();
+  }
+
+  autoLogin() async {
+    await FireAuthQuick.googleInitialize();
+    if (isDesktop) {
+      await FireAuthQuick.googleSignInSilentForDesktop();
+    }
+    final user = FireAuthQuick.currentUser;
+    if(user != null){
+      /// User is already logged in
+    }
+  }
+
   login(OAuth oAuth) async {
     await FireAuthQuick.loginWithProvider(oAuth: oAuth);
   }
