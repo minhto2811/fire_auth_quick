@@ -64,6 +64,7 @@ class FireAuthQuick {
     }
     return Future.value();
   }
+
   /// Default: GoogleSignIn(scopes: ['email', 'profile'])
 
   static Future<void> delete() async {

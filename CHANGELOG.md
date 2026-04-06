@@ -1,3 +1,9 @@
+#2.1.4
+
+* Define `Exception` 
+
+---
+
 #2.1.3
 
 * Fix `signOut` function
