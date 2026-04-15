@@ -1,3 +1,9 @@
+#2.2.0
+
+* Update dependencies
+
+---
+
 #2.1.4
 
 * Define `Exception` 
