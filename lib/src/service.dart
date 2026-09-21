@@ -23,12 +23,7 @@ class FireAuthQuick {
   /// Default: GoogleSignIn(scopes: ['email', 'profile'])
 
   /// please call method `reauthenticateWithProvider` before use method `delete`
-  static Future<void> delete() async {
-    await Future.wait([
-      _auth.currentUser!.delete(),
-      _googleDisconnect(),
-    ]);
-  }
+  static Future<void> delete() => _auth.currentUser!.delete();
 
   static Future<UserCredential> loginWithProvider(
       {required OAuth oAuth}) async {
@@ -79,7 +74,7 @@ class FireAuthQuick {
     if (user.isAnonymous) return user;
     final provider =
         authProvider ?? _getProvider(user.providerData.first.providerId);
-    await user.reauthenticateWithProvider(provider);
+    await user.reauthenticateWithPopup(provider);
     return user;
   }
 
