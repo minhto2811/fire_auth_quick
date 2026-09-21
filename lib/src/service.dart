@@ -74,7 +74,7 @@ class FireAuthQuick {
     if (user.isAnonymous) return user;
     final provider =
         authProvider ?? _getProvider(user.providerData.first.providerId);
-    await user.reauthenticateWithPopup(provider);
+    await user.reauthenticateWithProvider(provider);
     return user;
   }
 
