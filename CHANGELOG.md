@@ -1,3 +1,9 @@
+#2.3.0
+
+* `Desktop` login is no longer supported
+
+---
+
 #2.2.2
 
 * Update dependencies

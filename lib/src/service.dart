@@ -1,86 +1,38 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_sign_in_all_platforms_desktop/google_sign_in_all_platforms_desktop.dart';
 
 enum OAuth { google, apple, anonymous }
 
 class FireAuthQuick {
   static final _auth = FirebaseAuth.instance;
-  static const _clientId = String.fromEnvironment(
-    'GOOGLE_CLIENT_ID',
-    defaultValue: '',
-  );
-  static const _serverClientId = String.fromEnvironment(
-    'GOOGLE_SERVER_CLIENT_ID',
-    defaultValue: '',
-  );
-  static GoogleSignIn? _googleSignIn;
-  static GoogleSignInAllPlatformsDesktop? _googleSignInDesktop;
 
   static User? get currentUser => _auth.currentUser;
 
-  static Future<void> googleInitialize({
-    int redirectPort = 8000,
-  }) async {
-    if (isDesktop) {
-      if (_googleSignInDesktop != null) return;
-      _googleSignInDesktop = GoogleSignInAllPlatformsDesktop();
-      return _googleSignInDesktop!.init(GoogleSignInParams(
-        clientId: _clientId,
-        clientSecret: _serverClientId,
-        redirectPort: redirectPort,
-        scopes: ['openid', 'profile', 'email'],
-      ));
-    }
-    if (_googleSignIn != null) return;
-    _googleSignIn = GoogleSignIn.instance;
-    return _googleSignIn!.initialize();
-  }
-
-  static Future<UserCredential?> googleSignInSilentForDesktop() async {
-    if (_googleSignInDesktop == null) {
-      throw Exception('Google Sign In not initialized for desktop');
-    }
-    final googleAuth = await _googleSignInDesktop?.silentSignIn();
-    if (googleAuth == null) return null;
-    final credential = GoogleAuthProvider.credential(
-      idToken: googleAuth.idToken,
-      accessToken: googleAuth.accessToken,
-    );
-    return _auth.signInWithCredential(credential);
-  }
+  static Future<void> googleInitialize() => GoogleSignIn.instance.initialize();
 
   static Future<void> signOut() => Future.wait([
         _auth.signOut(),
         _googleSignOut(),
       ]);
 
-  static Future<void> _googleSignOut() {
-    if (isDesktop && _googleSignInDesktop != null) {
-      return _googleSignInDesktop!.signOut();
-    } else if (!isDesktop && _googleSignIn != null) {
-      return _googleSignIn!.signOut();
-    }
-    return Future.value();
-  }
+  static Future<void> _googleSignOut() => GoogleSignIn.instance.signOut();
+
+  static Future<void> _googleDisconnect() => GoogleSignIn.instance.disconnect();
 
   /// Default: GoogleSignIn(scopes: ['email', 'profile'])
 
   /// please call method `reauthenticateWithProvider` before use method `delete`
   static Future<void> delete() async {
-    if (isDesktop) {
-      throw Exception('Function not supported on Windows');
-    }
     await Future.wait([
       _auth.currentUser!.delete(),
-      _googleSignIn!.disconnect(),
+      _googleDisconnect(),
     ]);
   }
 
   static Future<UserCredential> loginWithProvider(
       {required OAuth oAuth}) async {
-    if (!isDesktop && _auth.currentUser != null) {
+    if (_auth.currentUser != null) {
       throw Exception('User already logged in');
     }
     switch (oAuth) {
@@ -132,15 +84,8 @@ class FireAuthQuick {
   }
 
   static Future<OAuthCredential> get _getOAuthCredentialGoogle async {
-    if (isDesktop) {
-      final googleAuth = await _googleSignInDesktop!.signInOnline();
-      return GoogleAuthProvider.credential(
-        idToken: googleAuth!.idToken,
-        accessToken: googleAuth.accessToken,
-      );
-    }
-    final googleUser =
-        await _googleSignIn!.authenticate(scopeHint: ['email', 'profile']);
+    final googleUser = await GoogleSignIn.instance
+        .authenticate(scopeHint: ['email', 'profile']);
     final idToken = googleUser.authentication.idToken;
     return GoogleAuthProvider.credential(
       idToken: idToken,

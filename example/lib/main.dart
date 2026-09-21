@@ -29,9 +29,6 @@ class _MyAppState extends State<MyApp> {
 
   autoLogin() async {
     await FireAuthQuick.googleInitialize();
-    if (isDesktop) {
-      await FireAuthQuick.googleSignInSilentForDesktop();
-    }
     final user = FireAuthQuick.currentUser;
     if(user != null){
       /// User is already logged in
