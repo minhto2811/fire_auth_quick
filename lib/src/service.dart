@@ -67,6 +67,7 @@ class FireAuthQuick {
 
   /// Default: GoogleSignIn(scopes: ['email', 'profile'])
 
+  /// please call method `reauthenticateWithProvider` before use method `delete`
   static Future<void> delete() async {
     if (isDesktop) {
       throw Exception('Function not supported on Windows');
